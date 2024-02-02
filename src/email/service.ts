@@ -9,11 +9,11 @@ export type Email = {
 }
 
 export type Sender = {
-  send: (email: Email) => Promise<void>
+  send: (email: Email) => Promise<void | any>
 }
 
 export type EmailBackend = {
-  send: (email: Email) => Promise<void>
+  send: (email: Email) => Promise<void | any>
 }
 
 export const createSender = (emailBackend: EmailBackend): Sender => {
