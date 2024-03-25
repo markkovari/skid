@@ -1,0 +1,45 @@
+name: "Run terraform quality checks; fmt, init, validate and docs"
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        type: string
+        description: "Terraform module folder paths as JSON"
+        required: true
+      tf-gen-docs:
+        type: boolean
+        default: true
+        description: "Terraform docs creation flag"
+      tf-doc-dirs:
+        type: string
+        default: "docs"
+        description: "Terraform documentation directories, comma separated string"
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ fromJSON(inputs.working-directory) }}
+    steps:
+      - name: "Checkout folder"
+        uses: "actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11"
+      - name: "Setup terraform cli"
+        uses: "hashicorp/setup-terraform@v3"
+      - name: "Terraform format"
+        run: "terraform fmt -check"
+        shell: bash
+      - name: "Terraform init"
+        run: "terraform init"
+        shell: bash
+      - name: "Terraform validate"
+        run: "terraform validate -no-color"
+        shell: bash
+      # - name: "Terraform docs"
+      #   uses: terraform-docs/gh-actions@main
+      #   with:
+      #     output-file: README.md
+      #     indention: 2
+      #     output-method: inject
+      #     git-push: "true"
