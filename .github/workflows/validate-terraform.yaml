@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - "infrastrucute/modules"
+      - "infrastructure/modules/**"
   push:
     branches:
       - main
     paths:
-      - "infrastrucute/modules"
+      - "infrastructure/modules/**"
 
 jobs:
   changed_files:
