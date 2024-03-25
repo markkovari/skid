@@ -1,0 +1,40 @@
+name: "Validate terraform"
+description: "Validate terraform; init, fmt, validate, docs"
+
+inputs:
+  module-path:
+    description: "Terrform module path"
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      working-directory: ${{ inputs.module-path }}
+      shell: bash
+      run: terraform init
+
+    - name: Terraform Fmt
+      working-directory: ${{ inputs.module-path }}
+      shell: bash
+      run: terraform fmt -check -recursive
+
+    - name: Terraform Validate
+      working-directory: ${{ inputs.module-path }}
+      shell: bash
+      run: terraform validate
+
+    - name: Terraform Docs
+      uses: terraform-docs/gh-actions@v1.1.0
+      with:
+        working-dir: ${{ inputs.module-path }}
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
