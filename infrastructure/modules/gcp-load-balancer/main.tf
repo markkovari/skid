@@ -41,6 +41,7 @@ resource "google_compute_url_map" "https-url-map" {
         for_each = path_matcher.value.is-index-html-redirect ? [1] : []
         content {
           paths = ["/"]
+          #should fail if service is not defined in vars
           service = var.service
           route_action {
             url_rewrite {
