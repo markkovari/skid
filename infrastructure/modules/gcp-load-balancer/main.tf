@@ -43,6 +43,8 @@ resource "google_compute_url_map" "https-url-map" {
           paths = ["/"]
           #should fail if service is not defined in vars
           #service = path_matcher.value.service should be instead
+          
+          
           service = var.service
           route_action {
             url_rewrite {
